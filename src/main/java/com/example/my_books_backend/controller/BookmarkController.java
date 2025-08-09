@@ -1,6 +1,7 @@
 package com.example.my_books_backend.controller;
 
 import java.net.URI;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,10 +28,13 @@ import lombok.RequiredArgsConstructor;
 public class BookmarkController {
     private final BookmarkService bookmarkService;
     private final UserRepository userRepository;
-    private static final Long DEMO_USER_ID = 1L;
-    
+
+    // application.propertiesからデモユーザーIDを取得
+    @Value("${app.demo.user.id}")
+    private Long DEMO_USER_ID;
+
     /**
-     * VERSION-1: デモ用固定ユーザー（ID=1）を取得
+     * デモ用ユーザーを取得
      */
     private User getDemoUser() {
         return userRepository.findById(DEMO_USER_ID)

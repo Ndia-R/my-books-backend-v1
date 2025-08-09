@@ -1,5 +1,6 @@
 package com.example.my_books_backend.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,10 +44,13 @@ public class UserController {
     private static final String DEFAULT_USER_START_PAGE = "1";
     private static final String DEFAULT_USER_PAGE_SIZE = "5";
     private static final String DEFAULT_USER_SORT = "updatedAt.desc";
-    private static final Long DEMO_USER_ID = 1L;
-    
+
+    // application.propertiesからデモユーザーIDを取得
+    @Value("${app.demo.user.id}")
+    private Long DEMO_USER_ID;
+
     /**
-     * VERSION-1: デモ用固定ユーザー（ID=1）を取得
+     * デモ用ユーザーを取得
      */
     private User getDemoUser() {
         return userRepository.findById(DEMO_USER_ID)
