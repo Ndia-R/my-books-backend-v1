@@ -54,13 +54,23 @@ public class FavoriteController {
         return ResponseEntity.created(location).body(response);
     }
 
-    @Operation(description = "お気に入り削除")
+    @Operation(description = "お気に入り削除（ID指定）")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFavorite(
         @PathVariable Long id
     ) {
         User user = getDemoUser();
         favoriteService.deleteFavorite(id, user);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(description = "お気に入り削除（書籍ID指定）")
+    @DeleteMapping("/books/{bookId}")
+    public ResponseEntity<Void> deleteFavoriteByBookId(
+        @PathVariable String bookId
+    ) {
+        User user = getDemoUser();
+        favoriteService.deleteFavoriteByBookId(bookId, user);
         return ResponseEntity.noContent().build();
     }
 }
