@@ -2,6 +2,8 @@ services:
   app:
     build:
       context: .
+      dockerfile: Dockerfile
+      target: development
     ports:
       - 8080:8080
     environment:
@@ -9,14 +11,13 @@ services:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      APP_API_VERSION: ${API_VERSION}
-      APP_SWAGGER_SERVER_URL: ${SWAGGER_SERVER_URL}
-      APP_SWAGGER_SERVER_DESCRIPTION: ${SWAGGER_SERVER_DESCRIPTION}
-      SPRINGDOC_SWAGGER_UI_CONFIG_URL: ${SWAGGER_UI_CONFIG_URL}
-      SPRINGDOC_SWAGGER_UI_URL: ${SWAGGER_UI_URL}
     volumes:
       - .:/workspace
       - gradle-cache:/home/vscode/.gradle
+      # Claude Code用の永続化設定（プロジェクト固有）
+      - claude-config:/home/vscode/.claude
+      - claude-history:/commandhistory
+      - claude-npm-global:/home/vscode/.npm-global
     depends_on:
       db:
         condition: service_healthy
@@ -49,3 +50,7 @@ services:
 volumes:
   db_data:
   gradle-cache:
+  # Claude Code用のボリューム（プロジェクト固有）
+  claude-config:      # Claude設定・認証情報
+  claude-history:     # コマンド履歴
+  claude-npm-global:  # npmグローバルパッケージ
